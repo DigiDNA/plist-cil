@@ -290,7 +290,9 @@ namespace Claunia.PropertyList
             xml.Append("<dict>");
             xml.Append(NEWLINE);
 
-            foreach(KeyValuePair<string, NSObject> kvp in dict)
+            SortedDictionary<string, NSObject> sortedDict = new SortedDictionary<string, NSObject>(dict, StringComparer.Ordinal);
+
+            foreach(KeyValuePair<string, NSObject> kvp in sortedDict)
             {
                 Indent(xml, level + 1);
                 xml.Append("<key>");
