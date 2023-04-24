@@ -449,6 +449,9 @@ namespace plistcil.test
             Assert.Equal(doubleValue, number.ToDouble(), 5);
         }
 
+        // Constant double cannot be directly cast to long without an unchecked statement which alters the result so an intermediary is needed
+        public static double maxDoubleForLongCasting = double.MaxValue;
+
         public static IEnumerable<object[]> DoubleConstructorTestData() => new List<object[]>
         {
             // Long values, formatted as hexadecimal values
@@ -470,7 +473,7 @@ namespace plistcil.test
             },
             new object[]
             {
-                double.MaxValue, true, long.MinValue /* Overflow! */, double.MaxValue
+                double.MaxValue, true, (long)NSNumberTests.maxDoubleForLongCasting, double.MaxValue
             },
             new object[]
             {
