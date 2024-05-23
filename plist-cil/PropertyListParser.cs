@@ -241,7 +241,8 @@ namespace Claunia.PropertyList
         /// <exception cref="IOException">When an error occurs during the writing process.</exception>
         public static void SaveAsXml(NSObject root, Stream outStream)
         {
-            using var w = new StreamWriter(outStream, Encoding.UTF8, 1024, true);
+            var encoding = new UTF8Encoding(false);
+            using var w = new StreamWriter(outStream, encoding, 1024, true);
 
             w.Write(root.ToXmlPropertyList());
         }
