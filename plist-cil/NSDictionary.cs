@@ -287,6 +287,13 @@ namespace Claunia.PropertyList
         internal override void ToXml(StringBuilder xml, int level)
         {
             Indent(xml, level);
+            
+            if(Count == 0)
+            {
+                xml.Append("<dict/>");
+                return;
+            }
+            
             xml.Append("<dict>");
             xml.Append(NEWLINE);
 
@@ -299,16 +306,7 @@ namespace Claunia.PropertyList
 
                 //According to http://www.w3.org/TR/REC-xml/#syntax node values must not
                 //contain the characters < or &. Also the > character should be escaped.
-                if(kvp.Key.Contains("&") ||
-                   kvp.Key.Contains("<") ||
-                   kvp.Key.Contains(">"))
-                {
-                    xml.Append("<![CDATA[");
-                    xml.Append(kvp.Key.Replace("]]>", "]]]]><![CDATA[>"));
-                    xml.Append("]]>");
-                }
-                else
-                    xml.Append(kvp.Key);
+                xml.Append(kvp.Key.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;"));
 
                 xml.Append("</key>");
                 xml.Append(NEWLINE);

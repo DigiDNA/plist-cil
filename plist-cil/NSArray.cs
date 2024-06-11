@@ -193,6 +193,13 @@ namespace Claunia.PropertyList
         internal override void ToXml(StringBuilder xml, int level)
         {
             Indent(xml, level);
+            
+            if(Count == 0)
+            {
+                xml.Append("<array/>");
+                return;
+            }
+            
             xml.Append("<array>");
             xml.Append(NEWLINE);
 

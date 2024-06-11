@@ -136,16 +136,7 @@ namespace Claunia.PropertyList
 
             //According to http://www.w3.org/TR/REC-xml/#syntax node values must not
             //contain the characters < or &. Also the > character should be escaped.
-            if(Content.Contains("&") ||
-               Content.Contains("<") ||
-               Content.Contains(">"))
-            {
-                xml.Append("<![CDATA[");
-                xml.Append(Content.Replace("]]>", "]]]]><![CDATA[>"));
-                xml.Append("]]>");
-            }
-            else
-                xml.Append(Content);
+            xml.Append(Content.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;"));
 
             xml.Append("</string>");
         }
