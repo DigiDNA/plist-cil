@@ -326,7 +326,7 @@ namespace Claunia.PropertyList
 
         /// <summary>
         ///     Converts this NSObject into an equivalent object of the .NET Runtime Environment.
-        ///     <para><see cref="NSArray" /> objects are converted to arrays.</para>
+        ///     <para><see cref="NSArray" /> objects are converted to lists.</para>
         ///     <para>
         ///         <see cref="NSDictionary" /> objects are converted to objects extending the
         ///         <see cref="Dictionary{TKey, TValue}" /> class.
@@ -348,11 +348,11 @@ namespace Claunia.PropertyList
             {
                 case NSArray:
                 {
-                    var      nsArray = (NSArray)this;
-                    object[] array   = new object[nsArray.Count];
+                    var          nsArray = (NSArray)this;
+                    List<object> array   = new List<object>();
 
                     for(int i = 0; i < nsArray.Count; i++)
-                        array[i] = nsArray[i].ToObject();
+                        array.Add( nsArray[i].ToObject() );
 
                     return array;
                 }
