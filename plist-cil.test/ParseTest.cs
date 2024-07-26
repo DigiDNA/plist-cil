@@ -255,8 +255,8 @@ namespace plistcil.test
 
             WrappedO = NSObject.Wrap((object)array);
             Assert.True(WrappedO is (NSArray));
-            object[] objArray = (object[])WrappedO.ToObject();
-            Assert.True(objArray.Length == array.Length);
+            List<object> objList = (List<object>)WrappedO.ToObject();
+            Assert.True(objList.Count == array.Length);
 
             WrappedO = NSObject.Wrap(array2);
             Assert.True(WrappedO is (NSArray));
@@ -264,8 +264,8 @@ namespace plistcil.test
 
             WrappedO = NSObject.Wrap((object)list);
             Assert.True(WrappedO is (NSArray));
-            objArray = (object[])WrappedO.ToObject();
-            Assert.True(objArray.Length == array.Length);
+            objList = (List<object>)WrappedO.ToObject();
+            Assert.True(objList.Count == array.Length);
 
             WrappedO = NSObject.Wrap((object)map);
             Assert.True(WrappedO is (NSDictionary));
