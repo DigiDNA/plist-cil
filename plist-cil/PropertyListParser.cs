@@ -24,6 +24,7 @@
 // SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -233,6 +234,25 @@ namespace Claunia.PropertyList
             using Stream fous = outFile.Open(FileMode.Create, FileAccess.ReadWrite);
 
             SaveAsXml(root, fous);
+        }
+        
+        /// <summary>Saves a property list with the given dictionary as root into a XML file path.</summary>
+        /// <param name="root">The root dictionary.</param>
+        /// <param name="outFile">The output file path.</param>
+        /// <exception cref="IOException">When an error occurs during the writing process.</exception>
+        /// <exception cref="ArgumentException">When an error occurs while parsing the file path.</exception>
+        /// <exception cref="SystemException">When an error occurs while parsing the file path.</exception>
+        public static void SaveAsXml(Dictionary<string, object> root, string outPath)
+        {
+            NSDictionary rootNSDictionary = NSObject.Wrap(root);
+            
+            var outFile = new FileInfo(outPath);
+            
+            // Use Create here -- to make sure that when the updated file is shorter than
+            // the original file, no "obsolete" data is left at the end.
+            using Stream fous = outFile.Open(FileMode.Create, FileAccess.ReadWrite);
+
+            SaveAsXml(rootNSDictionary, fous);
         }
 
         /// <summary>Saves a property list with the given object as root in XML format into an output stream.</summary>
