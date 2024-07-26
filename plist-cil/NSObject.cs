@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Claunia.PropertyList
@@ -320,6 +321,9 @@ namespace Claunia.PropertyList
 
             if(typeof(List<object>).IsAssignableFrom(c))
                 return Wrap(((List<object>)o).ToArray());
+                
+            if(typeof(System.Collections.IList).IsAssignableFrom(c))
+                return Wrap(((System.Collections.IList)o).OfType<object>().ToArray());
 
             throw new PropertyListException($"Cannot wrap an object of type {o.GetType().Name}.");
         }
