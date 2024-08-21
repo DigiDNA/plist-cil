@@ -362,13 +362,7 @@ namespace Claunia.PropertyList
                 }
                 case NSDictionary:
                 {
-                    Dictionary<string, NSObject> dictA = ((NSDictionary)this).GetDictionary();
-                    Dictionary<string, object>   dictB = new(dictA.Count);
-
-                    foreach(KeyValuePair<string, NSObject> kvp in dictA)
-                        dictB.Add(kvp.Key, kvp.Value.ToObject());
-
-                    return dictB;
+                    return ((NSDictionary)this).ToDictionary();
                 }
                 case NSSet:
                 {

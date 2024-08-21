@@ -328,6 +328,17 @@ namespace Claunia.PropertyList
             foreach(KeyValuePair<string, NSObject> entry in dict)
                 entry.Value.AssignIDs(outPlist);
         }
+        
+        public Dictionary<string, object> ToDictionary()
+        {
+            Dictionary<string, NSObject> dictA = ((NSDictionary)this).GetDictionary();
+            Dictionary<string, object>   dictB = new(dictA.Count);
+
+            foreach(KeyValuePair<string, NSObject> kvp in dictA)
+                dictB.Add(kvp.Key, kvp.Value.ToObject());
+
+            return dictB;
+        }
 
         internal override void ToBinary(BinaryPropertyListWriter outPlist)
         {
