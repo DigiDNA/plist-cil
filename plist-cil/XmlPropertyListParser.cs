@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.Win32.SafeHandles;
 
 namespace Claunia.PropertyList
 {
@@ -70,9 +71,11 @@ namespace Claunia.PropertyList
         public static NSObject Parse(Stream str)
         {
             var doc = new XmlDocument();
+            doc.PreserveWhitespace = true;
 
             var settings = new XmlReaderSettings();
             settings.DtdProcessing = DtdProcessing.Ignore;
+            settings.IgnoreWhitespace = false;
 
             using(var reader = XmlReader.Create(str, settings))
                 doc.Load(reader);
@@ -177,9 +180,10 @@ namespace Claunia.PropertyList
                 case "false":   return new NSNumber(false);
                 case "integer": return new NSNumber(GetNodeTextContents(n), NSNumber.INTEGER);
                 case "real":    return new NSNumber(GetNodeTextContents(n), NSNumber.REAL);
-                case "string":  return new NSString(GetNodeTextContents(n));
+                case "string":  return new NSString(GetNodeTextContents(n, true));
                 case "data":    return new NSData(GetNodeTextContents(n));
-                default:        return n.Name.Equals("date") ? new NSDate(GetNodeTextContents(n)) : null;
+                case "date":    return new NSDate(GetNodeTextContents(n));
+                default:        return null;
             }
         }
 
@@ -203,13 +207,11 @@ namespace Claunia.PropertyList
         /// </summary>
         /// <returns>The node's text content.</returns>
         /// <param name="n">The node.</param>
-        static string GetNodeTextContents(XmlNode n)
+        static string GetNodeTextContents(XmlNode n, bool includingWhitespace = false)
         {
             if(n.NodeType is XmlNodeType.Text or XmlNodeType.CDATA)
             {
-                string content = n.Value; //This concatenates any adjacent text/cdata/entity nodes
-
-                return content ?? "";
+                return n.Value ?? "";
             }
 
             if(!n.HasChildNodes)
@@ -219,12 +221,13 @@ namespace Claunia.PropertyList
 
             foreach(XmlNode child in children)
 
-                //Skip any non-text nodes, like comments or entities
-                if(child.NodeType is XmlNodeType.Text or XmlNodeType.CDATA)
+                //Find the first text or CDATA node, or whitespace when including
+                if(
+                    ( child.NodeType is XmlNodeType.Text or XmlNodeType.CDATA ) ||
+                    ( includingWhitespace == true && child.NodeType == XmlNodeType.Whitespace )
+                )
                 {
-                    string content = child.Value; //This concatenates any adjacent text/cdata/entity nodes
-
-                    return content ?? "";
+                    return child.Value ?? "";
                 }
 
             return "";

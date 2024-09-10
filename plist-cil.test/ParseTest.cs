@@ -320,5 +320,20 @@ namespace plistcil.test
             NSObject y = PropertyListParser.Parse(new FileInfo("test-files/out-testXml.plist"));
             Assert.True(x.Equals(y));
         }
+        
+        /**
+         * Test preserving a string containing only space on parse
+         */
+        [Fact]
+        public static void TestSpaces()
+        {
+            // Parse an example plist file
+            NSObject x = PropertyListParser.Parse(new FileInfo("test-files/spaces-only-string.plist"));
+            
+            // check the data in it
+            var d = (NSDictionary)x;
+            Assert.True(d.Count == 1);
+            Assert.Equal("    ", ((NSString)d.ObjectForKey("SpacesOnlyString")).ToString());
+        }
     }
 }
