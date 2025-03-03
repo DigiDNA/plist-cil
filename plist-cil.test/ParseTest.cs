@@ -215,15 +215,15 @@ namespace plistcil.test
 
             WrappedO = NSObject.Wrap((object)byt);
             Assert.True(WrappedO is (NSNumber));
-            Assert.True((int)WrappedO.ToObject() == byt);
+            Assert.True((long)WrappedO.ToObject() == byt);
 
             WrappedO = NSObject.Wrap((object)shrt);
             Assert.True(WrappedO is (NSNumber));
-            Assert.True((int)WrappedO.ToObject() == shrt);
+            Assert.True((long)WrappedO.ToObject() == shrt);
 
             WrappedO = NSObject.Wrap((object)i);
             Assert.True(WrappedO is (NSNumber));
-            Assert.True((int)WrappedO.ToObject() == i);
+            Assert.True((long)WrappedO.ToObject() == i);
 
             WrappedO = NSObject.Wrap((object)lng);
             Assert.True(WrappedO is (NSNumber));

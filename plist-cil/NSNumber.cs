@@ -267,7 +267,7 @@ namespace Claunia.PropertyList
         ///     </i>
         /// </summary>
         /// <returns>The value of the number as int.</returns>
-        public int ToInt() => (int)longValue;
+        public long ToInt() => longValue;
 
         /// <summary>The number's double value.</summary>
         /// <returns>The value of the number as double.</returns>
