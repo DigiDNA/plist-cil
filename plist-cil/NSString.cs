@@ -1,4 +1,4 @@
-﻿// plist-cil - An open source library to parse and generate property lists for .NET
+// plist-cil - An open source library to parse and generate property lists for .NET
 // Copyright (C) 2015 Natalia Portillo
 //
 // This code is based on:
