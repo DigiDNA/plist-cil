@@ -335,5 +335,34 @@ namespace plistcil.test
             Assert.True(d.Count == 1);
             Assert.Equal("    ", ((NSString)d.ObjectForKey("SpacesOnlyString")).ToString());
         }
+        
+        /**
+         * Test loading an XML plist with an end-tag mismatch
+         */
+        [Fact]
+        public static void TestCorruptXMLEndTagMismatch()
+        {
+            Assert.Throws<System.Xml.XmlException>(() => PropertyListParser.Parse(new FileInfo("test-files/corrupt-xml-end-tag-mismatch.plist")));
+        }
+        
+        /**
+         * Test loading an xml plist with an incorrectly named key tag in a dictionary
+         */
+         [Fact]
+        public static void TestCorruptPlistNonKeyInDictionary()
+        {
+            Assert.Throws<NonKeyEncounteredInDictionaryException>(() => PropertyListParser.Parse(new FileInfo("test-files/corrupt-plist-non-key-in-dictionary.plist")));
+        }
+        
+        /**
+         * Test loading an xml plist with an unknown object tag in a dictionary
+         */
+         [Fact]
+        public static void TestCorruptPlist()
+        {
+            UnknownTagEncounteredException ex = Assert.Throws<UnknownTagEncounteredException>(() => PropertyListParser.Parse(new FileInfo("test-files/corrupt-plist-unknown-object-tag.plist")));
+            
+            Assert.Equal("char", ex.UnknownTag);
+        }
     }
 }

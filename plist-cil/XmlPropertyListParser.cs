@@ -157,6 +157,11 @@ namespace Claunia.PropertyList
                     {
                         XmlNode key = children[i];
                         XmlNode val = children[i + 1];
+                        
+                        if(key.Name != "key")
+                        {
+                            throw new NonKeyEncounteredInDictionaryException();
+                        }
 
                         string keyString = GetNodeTextContents(key);
 
@@ -182,7 +187,7 @@ namespace Claunia.PropertyList
                 case "string":  return new NSString(GetNodeTextContents(n, true));
                 case "data":    return new NSData(GetNodeTextContents(n));
                 case "date":    return new NSDate(GetNodeTextContents(n));
-                default:        return null;
+                default:        throw new UnknownTagEncounteredException(n.Name);
             }
         }
 

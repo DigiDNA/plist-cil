@@ -37,4 +37,28 @@ namespace Claunia.PropertyList
         /// <param name="message">A message containing information about the nature of the exception.</param>
         public PropertyListFormatException(string message) : base(message) {}
     }
+    
+    /// <summary>
+    ///     A NonKeyEncounteredInDictionaryException is thrown by the XML property list parser when it encounters
+    ///     a non-key tag where one should be.
+    /// </summary>
+    public class NonKeyEncounteredInDictionaryException : PropertyListFormatException
+    {
+        public NonKeyEncounteredInDictionaryException() : base("Encountered non-key inside dictionary.")
+        {}
+    }
+    
+    /// <summary>
+    ///     An UnknownTagEncounteredException is thrown by the XML property list parser when it encounters
+    ///     an XML tag that is not part of the plist standard.
+    /// </summary>
+    public class UnknownTagEncounteredException : PropertyListFormatException
+    {
+        public string UnknownTag;
+        
+        public UnknownTagEncounteredException(string tag) : base($"Encountered unknown tag {tag}")
+        {
+            UnknownTag = tag;
+        }
+    }
 }
