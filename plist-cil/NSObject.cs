@@ -24,7 +24,6 @@
 // SOFTWARE.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -309,33 +308,13 @@ namespace Claunia.PropertyList
                 return Wrap((object[])o);
             }
 
-            if(typeof(IDictionary<string, object>).IsAssignableFrom(c))
+            if(typeof(Dictionary<string, object>).IsAssignableFrom(c))
             {
-                IDictionary<string, object> netDict = (IDictionary<string, object>)o;
-                var                         dict    = new NSDictionary();
+                Dictionary<string, object> netDict = (Dictionary<string, object>)o;
+                var                        dict    = new NSDictionary();
 
                 foreach(KeyValuePair<string, object> kvp in netDict)
                     dict.Add(kvp.Key, Wrap(kvp.Value));
-
-                return dict;
-            }
-            
-            if(typeof(IDictionary).IsAssignableFrom(c))
-            {
-                IDictionary netDict = (IDictionary)o;
-                var                            dict    = new NSDictionary();
-
-                foreach(DictionaryEntry kvp in netDict)
-                {
-                    if(kvp.Key is string key)
-                    {
-                        dict.Add(key, Wrap(kvp.Value));
-                    }
-                    else
-                    {
-                        throw new PropertyListException($"Cannot wrap a dictionary whose keys are not of type String.");
-                    }
-                }
 
                 return dict;
             }
@@ -343,22 +322,8 @@ namespace Claunia.PropertyList
             if(typeof(List<object>).IsAssignableFrom(c))
                 return Wrap(((List<object>)o).ToArray());
                 
-            if(typeof(IList).IsAssignableFrom(c))
-                return Wrap(((IList)o).OfType<object>().ToArray());
-                
-            if(typeof(IEnumerable).IsAssignableFrom(c))
-            {
-                IEnumerable enumerable = (IEnumerable)o;
-                IEnumerator enumerator = enumerable.GetEnumerator();
-                var         list       = new NSArray();
-                
-                while(enumerator.MoveNext())
-                {
-                    list.Add(enumerator.Current);
-                }
-                
-                return list;
-            }
+            if(typeof(System.Collections.IList).IsAssignableFrom(c))
+                return Wrap(((System.Collections.IList)o).OfType<object>().ToArray());
 
             throw new PropertyListException($"Cannot wrap an object of type {o.GetType().Name}.");
         }
