@@ -365,5 +365,20 @@ namespace Claunia.PropertyList
 
             return true;
         }
+        
+        /// <summary>
+        /// Clones an NSArray instance deeply such that any mutation to the clone will not be reflected in the source.
+        /// </summary>
+        /// <returns>A deep clone of the this instance.</returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public new NSArray DeepClone()
+        {
+            NSArray clone = new NSArray(array.Count);
+            foreach(NSObject item in array)
+            {
+                clone.Add(item.DeepClone());
+            }
+            return clone;
+        }
     }
 }

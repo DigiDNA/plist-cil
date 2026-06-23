@@ -561,5 +561,20 @@ namespace Claunia.PropertyList
         /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public bool IsReadOnly => false;
         #endregion
+    
+        /// <summary>
+        /// Clones an NSDictionary instance deeply such that any mutation to the clone will not be reflected in the source.
+        /// </summary>
+        /// <returns>A deep clone of the this instance.</returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public new NSDictionary DeepClone()
+        {
+            NSDictionary clone = new NSDictionary(Count);
+            foreach(KeyValuePair<string, NSObject> keyValuePair in this)
+            {
+                clone.Add(keyValuePair.Key, keyValuePair.Value.DeepClone());
+            }
+            return clone;
+        }
     }
 }

@@ -397,5 +397,20 @@ namespace Claunia.PropertyList
 
             return true;
         }
+        
+        /// <summary>
+        /// Clones an NSSet instance deeply such that any mutation to the clone will not be reflected in the source.
+        /// </summary>
+        /// <returns>A deep clone of the this instance.</returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public new NSSet DeepClone()
+        {
+            NSSet clone = new NSSet();
+            foreach(NSObject item in set)
+            {
+                clone.AddObject(item.DeepClone());
+            }
+            return clone;
+        }
     }
 }

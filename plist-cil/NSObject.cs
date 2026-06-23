@@ -436,5 +436,45 @@ namespace Claunia.PropertyList
         ///     <see cref="Claunia.PropertyList.NSObject" />; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals(NSObject obj);
+        
+        /// <summary>
+        /// Clones an NSObject instance deeply such that any mutation to the clone will not be reflected in the source.
+        /// </summary>
+        /// <returns>A deep clone of the this instance.</returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public NSObject DeepClone()
+        {
+            switch(this)
+            {
+                case NSDictionary dictionary:
+                {
+                    return dictionary.DeepClone();
+                }
+                case NSArray array:
+                {
+                    return array.DeepClone();
+                }
+                case NSSet set:
+                {
+                    return set.DeepClone();
+                }
+
+                case NSString stringValue:
+                    return new NSString(stringValue.Content);
+                case NSData data:
+                    return new NSData(data.Bytes.ToArray());
+                case NSDate date:
+                    return new NSDate(date.Date);
+                case NSNumber number:
+                    return number.GetNSNumberType() switch
+                    {
+                        NSNumber.BOOLEAN => new NSNumber( number.ToBool() ),
+                        NSNumber.REAL    => new NSNumber( number.ToDouble() ),
+                        _                => new NSNumber( number.ToLong() ),
+                    };
+                default:
+                    throw new NotSupportedException($"Cannot deep-clone an NSObject of type {GetType().Name}.");
+            }
+        }
     }
 }
